@@ -10,7 +10,7 @@ fs.readFile("day1/input.txt", function (err, data) {
 
   let depthMeasurementIncreases = 0;
 
-  for (let i = 1; i < arr.length; i++) {
+  for (let i = 1; i < arr.length - 2; i++) {
     const prevSum = arr[i - 1] + arr[i] + arr[i + 1];
     const curSum = arr[i] + arr[i + 1] + arr[i + 2];
     if (curSum > prevSum) depthMeasurementIncreases++;
