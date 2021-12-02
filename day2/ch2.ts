@@ -1,67 +1,30 @@
 import * as fs from "fs";
-
-enum position {
-  horizontal,
-  depth,
-  aim,
-}
-
-enum direction {
-  forward,
-  up,
-  down,
-}
-class courseInstruction {
-  direction: direction;
-  distance: number;
-
-  constructor(input: string) {
-    const splitVals = input.split(" ");
-    this.direction = direction[splitVals[0]];
-    this.distance = +splitVals[1];
-  }
-}
+import { CourseInstruction, Direction, Position } from "./obj";
+import { calculatePosition } from "./util";
 
 fs.readFile("day2/input.txt", function (err, data) {
   if (err) throw err;
 
-  const courseInstructions: courseInstruction[] = data
+  const courseInstructions: CourseInstruction[] = data
     .toString()
     .trim()
     .split("\n")
-    .map((x) => new courseInstruction(x));
+    .map((x) => new CourseInstruction(x));
 
-  const endPosition: { [key in position]: number } = {
-    [position.horizontal]: 0,
-    [position.depth]: 0,
-    [position.aim]: 0,
-  };
-  for (const instr of courseInstructions) {
-    switch (instr.direction) {
-      case direction.down: {
-        endPosition[position.aim] += instr.distance;
-        break;
-      }
-      case direction.up: {
-        endPosition[position.aim] -= instr.distance;
-        break;
-      }
-      case direction.forward: {
-        endPosition[position.horizontal] += instr.distance;
-        endPosition[position.depth] +=
-          endPosition[position.aim] * instr.distance;
-      }
-    }
-  }
+  const endPosition: { [key in Position]: number } = calculatePosition(
+    courseInstructions,
+    true
+  );
+
   console.log("Position after moving:");
   console.log(
-    `Moved ${endPosition[position.horizontal]} chunks forward\nand ${
-      endPosition[position.depth]
+    `Moved ${endPosition[Position.Horizontal]} chunks forward\nand ${
+      endPosition[Position.Depth]
     } chunks in depth`
   );
 
   console.log(
     "The outcome for the challenge is multiplication of horizontal & depth chunks resulting in:"
   );
-  console.log(endPosition[position.horizontal] * endPosition[position.depth]);
+  console.log(endPosition[Position.Horizontal] * endPosition[Position.Depth]);
 });

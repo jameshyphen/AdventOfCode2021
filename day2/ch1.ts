@@ -1,57 +1,30 @@
 import * as fs from "fs";
-
-enum position {
-  horizontal,
-  depth,
-}
-
-enum direction {
-  forward = 0,
-  up = 1,
-  down = 2,
-}
-class courseInstruction {
-  direction: direction;
-  distance: number;
-
-  constructor(input: string) {
-    const splitVals = input.split(" ");
-    this.direction = direction[splitVals[0]];
-    this.distance = +splitVals[1];
-  }
-}
+import { CourseInstruction, Direction, Position } from "./obj";
+import { calculatePosition } from "./util";
 
 fs.readFile("day2/input.txt", function (err, data) {
   if (err) throw err;
 
-  const courseInstructions: courseInstruction[] = data
+  const courseInstructions: CourseInstruction[] = data
     .toString()
     .trim()
     .split("\n")
-    .map((x) => new courseInstruction(x));
+    .map((x) => new CourseInstruction(x));
 
-  let positionInstance: { [key in direction]: number } = {
-    [direction.forward]: 0,
-    [direction.up]: 0,
-    [direction.down]: 0,
-  };
+  const endPosition: { [key in Position]?: number } = calculatePosition(
+    courseInstructions,
+    false
+  );
 
-  for (const instr of courseInstructions) {
-    positionInstance[instr.direction] += instr.distance;
-  }
-  const endPosition: { [key in position]: number } = {
-    0: positionInstance[direction.forward],
-    1: positionInstance[direction.down] - positionInstance[direction.up],
-  };
-  console.log("Position after moving:");
+  console.log(endPosition);
   console.log(
-    `Moved ${endPosition[position.horizontal]} chunks forward\nand ${
-      endPosition[position.depth]
+    `Moved ${endPosition[Position.Horizontal]} chunks forward\nand ${
+      endPosition[Position.Depth]
     } chunks in depth`
   );
 
   console.log(
     "The outcome for the challenge is multiplication of horizontal & depth chunks resulting in:"
   );
-  console.log(endPosition[position.horizontal] * endPosition[position.depth]);
+  console.log(endPosition[Position.Horizontal] * endPosition[Position.Depth]);
 });
