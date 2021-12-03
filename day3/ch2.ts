@@ -36,28 +36,13 @@ function filterBitsArray(arr: string[], pos: number, oxygen: boolean = true) {
     if (x.charAt(pos) == "1") amountOfOnesPerPosition++;
     else amountOfZeroesPerPosition++;
   });
-  if (!oxygen) {
-    console.log(arr);
-    console.log();
-    console.log("Position: " + pos);
-    console.log("Number of ones: " + amountOfOnesPerPosition);
-    console.log("Number of zeroes: " + amountOfZeroesPerPosition);
-  }
   if (arr.length === 1)
     return [replaceAt(arr[0], pos, arr[0].charAt(pos) == "1" ? "0" : "1")];
   if (amountOfOnesPerPosition >= amountOfZeroesPerPosition) {
-    if (!oxygen) console.log("Became a 0");
-    console.log();
-    console.log();
-    console.log();
     return arr
       .filter((x) => x.charAt(pos) == (oxygen ? "1" : "0"))
       .slice(0, amountOfOnesPerPosition > 0 ? amountOfOnesPerPosition : 1);
   } else {
-    if (!oxygen) console.log("Became a 1");
-    console.log();
-    console.log();
-    console.log();
     return arr
       .filter((x) => x.charAt(pos) == (oxygen ? "0" : "1"))
       .slice(0, amountOfZeroesPerPosition > 0 ? amountOfZeroesPerPosition : 1);
@@ -70,22 +55,4 @@ const replaceAt = (word: string, index: number, replacement: string) => {
     replacement +
     word.substr(index + replacement.length)
   );
-};
-
-const invertBits = (bits: string) => {
-  let newBits = "";
-  for (let i = 0; i < bits.length; i++) {
-    switch (bits.charAt(i)) {
-      case "0":
-        newBits += "1";
-        break;
-      case "1":
-        newBits += "0";
-        break;
-      case "2":
-        newBits += "2";
-        break;
-    }
-  }
-  return newBits;
 };
