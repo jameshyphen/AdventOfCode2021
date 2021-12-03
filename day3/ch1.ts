@@ -1,6 +1,5 @@
 import * as fs from "fs";
-import { stringify } from "querystring";
-import { convertFromBits } from "./util";
+import { convertFromBits, getAmountsOfOnesPerPositionInArray } from "./util";
 
 fs.readFile("day3/input.txt", function (err, data) {
   if (err) throw err;
@@ -12,30 +11,21 @@ fs.readFile("day3/input.txt", function (err, data) {
 
   const arrSize: number = arr.length;
 
-  let amountOfOnesPerPosition: number[] = new Array<number>(arr[0].length).fill(
-    0
-  );
+  let amountOfOnesPerPosition: number[] =
+    getAmountsOfOnesPerPositionInArray(arr);
 
-  arr.forEach((bitString) => {
-    for (let i = 0; i < bitString.length; i++) {
-      if (bitString.charAt(i) === "1") {
-        amountOfOnesPerPosition[i]++;
-      }
-    }
-  });
-
-  let gamma_rate: string = "";
-  let epilson_rate: string = "";
+  let gammaRate: string = "";
+  let epsilonRate: string = "";
 
   amountOfOnesPerPosition.forEach((amountOfOnes: number) => {
     if (+amountOfOnes > Math.floor(arrSize / 2)) {
-      gamma_rate += "1";
-      epilson_rate += "0";
+      gammaRate += "1";
+      epsilonRate += "0";
     } else {
-      gamma_rate += "0";
-      epilson_rate += "1";
+      gammaRate += "0";
+      epsilonRate += "1";
     }
   });
-  const resultCh1 = convertFromBits(gamma_rate) * convertFromBits(epilson_rate);
+  const resultCh1 = convertFromBits(gammaRate) * convertFromBits(epsilonRate);
   console.log(resultCh1);
 });

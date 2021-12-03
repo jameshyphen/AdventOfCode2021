@@ -7,3 +7,18 @@ export const convertFromBits = (bits: string) => {
   }
   return total;
 };
+
+export const getAmountsOfOnesPerPositionInArray = (arr: string[]) => {
+  let amountOfOnesPerPosition: number[] = new Array<number>(arr[0].length).fill(
+    0
+  );
+
+  arr.forEach((bitString) => {
+    for (let i = 0; i < bitString.length; i++) {
+      if (bitString.charAt(i) === "1") {
+        amountOfOnesPerPosition[i]++;
+      }
+    }
+  });
+  return amountOfOnesPerPosition;
+};
