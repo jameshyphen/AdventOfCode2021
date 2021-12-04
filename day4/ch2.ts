@@ -49,10 +49,9 @@ class BingoNumber {
 }
 
 class BingoCard {
-  CardId: number;
   BingoNumbers: BingoNumber[][] = [...Array(5)].map(() => Array(5));
 
-  constructor(cardId: number, cardInput: number[]) {
+  constructor(cardInput: number[]) {
     let x = 0;
     let y = 0;
     cardInput.forEach((number) => {
@@ -130,12 +129,11 @@ fs.readFile("day4/input.txt", function (err, data) {
 
   const cardsRaw: string[] = arr.slice(1, arr.length);
   let cards: BingoCard[] = [];
-  let cardId: number = 1;
 
   let numbers: number[] = [];
   for (let i = 0; i < cardsRaw.length; i++) {
     if (numbers.length > 0 && cardsRaw[i].length === 0) {
-      cards.push(new BingoCard(cardId++, numbers));
+      cards.push(new BingoCard(numbers));
       numbers = [];
     } else if (cardsRaw[i].length > 0) {
       numbers.push(
