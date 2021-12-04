@@ -148,9 +148,8 @@ fs.readFile("day4/input.txt", function (err, data) {
   }
 
   let winners: BingoCard[] = [];
-
-  let winnerCard: BingoCard;
   let numberCalledLast: number;
+
   for (let input of inputs) {
     if (winners.length == cards.length) break;
     for (let card of cards) {
