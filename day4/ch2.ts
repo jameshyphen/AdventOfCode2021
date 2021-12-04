@@ -1,4 +1,3 @@
-import { Console } from "console";
 import * as fs from "fs";
 
 function InvertDirection(direction: Direction) {
@@ -147,18 +146,21 @@ fs.readFile("day4/input.txt", function (err, data) {
       );
     }
   }
+
+  let winners: BingoCard[] = [];
+
   let winnerCard: BingoCard;
   let numberCalledLast: number;
   for (let input of inputs) {
-    if (winnerCard) break;
+    if (winners.length == cards.length) break;
     for (let card of cards) {
-      if (winnerCard) break;
+      if (winners.length == cards.length) break;
       card.CheckNumber(input);
       for (let direction in Direction) {
-        if (winnerCard) break;
+        if (winners.length == cards.length) break;
         const allCheckedCords = card.GetAllCheckedCords();
         for (let checkedCord of allCheckedCords) {
-          if (winnerCard) break;
+          if (winners.length == cards.length) break;
           const checkedAmount =
             1 +
             card.FetchChecked(
@@ -171,9 +173,9 @@ fs.readFile("day4/input.txt", function (err, data) {
               checkedCord[1],
               InvertDirection(direction as Direction)
             );
-          if (checkedAmount === 5) {
+          if (checkedAmount === 5 && !winners.includes(card)) {
             console.log("We have a winner!");
-            winnerCard = card;
+            winners.push(card);
             numberCalledLast = input;
           }
         }
@@ -182,7 +184,7 @@ fs.readFile("day4/input.txt", function (err, data) {
   }
 
   let total = 0;
-  winnerCard.BingoNumbers.forEach((x) => {
+  winners[winners.length - 1].BingoNumbers.forEach((x) => {
     x.forEach((card) => {
       if (!card.Checked) total += card.Number;
     });
